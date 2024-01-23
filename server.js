@@ -6,23 +6,11 @@ const port = 3000;
 app.use(express.static('public'));
 
 // Define your endpoints here
-app.get('/', (req, res) => {
-    res.send('Hello, htmx!');
-});
-
-app.post('/data', (req, res) => {
-    // Handle the POST request here
-    res.send('Received POST request');
-});
-
-app.get('/data', (req, res) => {
-    // Handle the GET request here
-    res.send('Received GET request');
-});
-
 app.get('/api/lists', (req, res) => {
     // Handle the GET request here
-    res.send('lists of todos');
+    const items = ['item_1', 'item_2', 'item_3'];
+    const html = `${items.map(item => `<li>${item}</li>`).join('')}`;
+    res.send(html);
 });
 
 
