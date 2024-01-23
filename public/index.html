@@ -8,8 +8,12 @@
 </head>
 <body>
     <h1>todo lists</h1>
-    <ol id="todo-lists" hx-get="/api/lists" hx-trigger="load"></ol>
 
+    <ol id="todo-lists" hx-get="/api/lists" hx-trigger="load"></ol>
+    <form hx-post="/api/lists" hx-trigger="submit" hx-target="#todo-lists" hx-swap="beforeend">
+    <input type="text" name="name" placeholder="New list name" required>
+    <button type="submit">Add List</button>
+</form>
 
 
     

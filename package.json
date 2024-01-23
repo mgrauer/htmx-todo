@@ -2,21 +2,24 @@
   "name": "htmx-todo",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-      "start": "nodemon index.js",
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2"
   },
+  "nodemonConfig": {
+    "watch": [
+      "server.js",
+      "public/*"
+    ]
+  },
   "devDependencies": {
     "nodemon": "^3.0.3"
-  },
-  "nodemonConfig": {
-    "watch": ["public/*"]
   }
 }
