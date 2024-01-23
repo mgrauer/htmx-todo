@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>htmx todo application</title>
     <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <h1>todo lists</h1>
 
     <ol id="todo-lists" hx-get="/api/lists" hx-trigger="load"></ol>
-    <form hx-post="/api/lists" hx-trigger="submit" hx-target="#todo-lists" hx-swap="beforeend">
-    <input type="text" name="name" placeholder="New list name" required>
-    <button type="submit">Add List</button>
-</form>
-
-
-    
-</body>
+    <form
+      hx-post="/api/lists"
+      hx-trigger="submit"
+      hx-target="#todo-lists"
+      hx-swap="beforeend"
+    >
+      <input type="text" name="name" placeholder="New list name" required />
+      <button type="submit">Add List</button>
+    </form>
+  </body>
 </html>
