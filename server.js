@@ -3,7 +3,7 @@ const app = express();
 const port = 3000;
 
 // Serve static files from the public directory
-app.use(express.static("public"));
+app.set("view engine", "pug");
 app.use(express.urlencoded({ extended: true }));
 
 class TodoList {
@@ -61,6 +61,10 @@ class TodoLists {
 
 // Endpoints
 const todoLists = new TodoLists();
+
+app.get("/", (req, res) => {
+  res.render("index", { title: "Todo Lists" });
+});
 
 app.get("/api/lists", (req, res) => {
   const html = todoLists.getHtml();
