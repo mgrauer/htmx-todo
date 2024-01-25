@@ -7,7 +7,9 @@ html(lang="en")
     script(src="https://unpkg.com/htmx.org/dist/htmx.js")
   body
     h1 todo lists
-    ol#todo-lists(hx-get="/api/lists", hx-trigger="load")
-    form(hx-post="/api/lists", hx-trigger="submit", hx-target="#todo-lists", hx-swap="beforeend")
+    ol#todo-lists
+      each todoList in todoLists
+        != todoList 
+    form(hx-post="/api/list", hx-trigger="submit", hx-target="#todo-lists", hx-swap="beforeend")
       input(type="text", name="name", placeholder="New list name", required)
       button(type="submit") Add List

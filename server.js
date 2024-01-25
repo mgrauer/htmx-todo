@@ -1,8 +1,9 @@
 const express = require("express");
+const path = require("path");
+const pug = require("pug");
 const app = express();
 const port = 3000;
 
-// Serve static files from the public directory
 app.set("view engine", "pug");
 app.use(express.urlencoded({ extended: true }));
 
@@ -12,16 +13,15 @@ class TodoList {
     this.id = id;
   }
 
+  updateName(newName) {
+    this.name = newName;
+  }
+
   getHtml() {
-    return `
-      <li>
-        <form hx-put="/api/lists/${this.id}" hx-trigger="submit" hx-target="closest li" hx-swap="outerHTML">
-          <input type="text" name="name" value="${this.name}" required />
-          <button type="submit">Save</button>
-        </form>
-        <button hx-delete="/api/lists/${this.id}" hx-trigger="click" hx-confirm="Are you sure you want to delete this list?" hx-target="closest li" hx-swap="delete">Delete</button>
-      </li>
-    `;
+    const templatePath = path.join(__dirname, "views", "todoList.pug");
+    const compiledTemplate = pug.compileFile(templatePath);
+    const html = compiledTemplate({ name: this.name, id: this.id });
+    return html;
   }
 }
 
@@ -59,32 +59,32 @@ class TodoLists {
   }
 }
 
-// Endpoints
 const todoLists = new TodoLists();
 
+// Endpoints
+
+// Root Endpoint for page load
+
 app.get("/", (req, res) => {
-  res.render("index", { title: "Todo Lists" });
+  const todoListsHtml = todoLists.getHtml();
+  res.render("index", { title: "Todo Lists", todoLists: todoListsHtml });
 });
 
-app.get("/api/lists", (req, res) => {
-  const html = todoLists.getHtml();
-  res.send(html);
-});
+// TodoList Endpoints
 
-app.post("/api/lists", (req, res) => {
-  const newList = req.body.name; // Assuming the new string is passed in the request body as "name"
+app.post("/api/list", (req, res) => {
+  const newList = req.body.name;
   const todoList = todoLists.addList(newList);
   const html = todoList.getHtml();
   res.send(html);
 });
 
-app.put("/api/lists/:id", (req, res) => {
+app.put("/api/list/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const newName = req.body.name;
-
   const todoList = todoLists.findById(id);
   if (todoList) {
-    todoList.name = newName;
+    todoList.updateName(newName);
     const html = todoList.getHtml();
     res.send(html);
   } else {
@@ -92,7 +92,7 @@ app.put("/api/lists/:id", (req, res) => {
   }
 });
 
-app.delete("/api/lists/:id", (req, res) => {
+app.delete("/api/list/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const wasDeleted = todoLists.deleteList(id);
   if (wasDeleted) {
