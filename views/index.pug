@@ -1,0 +1,15 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title= title
+    script(src="https://unpkg.com/htmx.org/dist/htmx.js")
+  body
+    h1 todo lists
+    ol#todo-lists
+      each todoList in todoLists
+        != todoList 
+    form(hx-post="/api/list", hx-trigger="submit", hx-target="#todo-lists", hx-swap="beforeend")
+      input(type="text", name="name", placeholder="New list name", required)
+      button(type="submit") Add List
