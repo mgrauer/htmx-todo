@@ -17,7 +17,7 @@
   "nodemonConfig": {
     "watch": [
       "server.js",
-      "public/*"
+      "dataHandler.js"
     ]
   },
   "devDependencies": {
