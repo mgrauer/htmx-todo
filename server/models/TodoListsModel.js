@@ -1,7 +1,9 @@
+const { readTodos, writeTodos } = require("../db/jsonPersistence");
 const TodoListModel = require("./TodoListModel");
 
 class TodoListsModel {
-  constructor(todoListsData) {
+  constructor() {
+    const todoListsData = readTodos();
     if (Array.isArray(todoListsData)) {
       // TODO: all this business with maxId is to maintain unique ids
       // it's better off in a persistence layer
@@ -22,8 +24,8 @@ class TodoListsModel {
     return this.todoLists.map((item) => item.getHtml()).join("");
   }
 
-  getData() {
-    return this.todoLists;
+  persist() {
+    writeTodos(this.todoLists);
   }
 
   addList(newList) {
@@ -31,6 +33,7 @@ class TodoListsModel {
     const id = this.maxId;
     const todoList = new TodoListModel(newList, id);
     this.todoLists.push(todoList);
+    this.persist();
     return todoList;
   }
 
@@ -38,10 +41,20 @@ class TodoListsModel {
     return this.todoLists.find((list) => list.id === id);
   }
 
+  updateTodoListName(id, newName) {
+    const todoList = this.findById(id);
+    if (todoList) {
+      todoList.updateName(newName);
+      this.persist();
+    }
+    return todoList;
+  }
+
   deleteList(id) {
     const index = this.todoLists.findIndex((list) => list.id === id);
     if (index !== -1) {
       this.todoLists.splice(index, 1);
+      this.persist();
       return true;
     }
     return false;
