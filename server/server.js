@@ -2,37 +2,13 @@ const express = require("express");
 const path = require("path");
 const pug = require("pug");
 const { readTodos, writeTodos } = require("./dataHandler");
+const TodoListModel = require("./models/TodoListModel");
 
 const app = express();
 const port = 3000;
 
 app.set("view engine", "pug");
 app.use(express.urlencoded({ extended: true }));
-
-class TodoList {
-  constructor(name, id, todos = []) {
-    this.name = name;
-    this.id = id;
-    this.todos = todos;
-  }
-
-  updateName(newName) {
-    this.name = newName;
-  }
-
-  getHtml() {
-    const templatePath = path.join(__dirname, "..", "views", "todoList.pug");
-    let html;
-    try {
-      const compiledTemplate = pug.compileFile(templatePath);
-      html = compiledTemplate({ name: this.name, id: this.id });
-    } catch (error) {
-      console.error("Error compiling Pug template:", error);
-      html = "<p>borked - cannot find pug</p>";
-    }
-    return html;
-  }
-}
 
 class TodoLists {
   constructor(todoListsData) {
@@ -44,7 +20,7 @@ class TodoLists {
         if (item.id > this.maxId) {
           this.maxId = item.id;
         }
-        return new TodoList(item.name, item.id, item.todos);
+        return new TodoListModel(item.name, item.id, item.todos);
       });
     } else {
       this.todoLists = [];
@@ -63,7 +39,7 @@ class TodoLists {
   addList(newList) {
     this.maxId += 1;
     const id = this.maxId;
-    const todoList = new TodoList(newList, id);
+    const todoList = new TodoListModel(newList, id);
     this.todoLists.push(todoList);
     return todoList;
   }
