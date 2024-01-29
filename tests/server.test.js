@@ -4,11 +4,12 @@ const app = require("../server/server");
 describe("Server Endpoints", () => {
   beforeEach(() => {
     // TODO cp data/test-storage.json.bak data/test-storage.json
-    // TODO move the test-storage file to a test_data folder
+    // TODO move the test-storage file to a test_data folder, and add it to source control
   });
 
   // TODO break these into smaller tests so that we can test each endpoint independently and get a better sense of which one is breaking
   // the overall sequence of requests is a very stateful test
+  // Todo the server persists past tests, or some kind of async operations persist
 
   test("Test sequence of requests", async () => {
     // Test initial db state with get of application root
