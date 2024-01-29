@@ -1,5 +1,7 @@
 const path = require("path");
 const pug = require("pug");
+const configPath = path.join(process.cwd(), "config");
+const config = require(configPath);
 
 class TodoListModel {
   constructor(name, id, todos = []) {
@@ -13,13 +15,7 @@ class TodoListModel {
   }
 
   getHtml() {
-    const templatePath = path.join(
-      __dirname,
-      "..",
-      "..",
-      "views",
-      "todoList.pug"
-    );
+    const templatePath = path.join(config.pugBasePath, "todoList.pug");
     let html;
     try {
       const compiledTemplate = pug.compileFile(templatePath);
