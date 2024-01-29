@@ -21,9 +21,15 @@ class TodoList {
   }
 
   getHtml() {
-    const templatePath = path.join(__dirname, "views", "todoList.pug");
-    const compiledTemplate = pug.compileFile(templatePath);
-    const html = compiledTemplate({ name: this.name, id: this.id });
+    const templatePath = path.join(__dirname, "..", "views", "todoList.pug");
+    let html;
+    try {
+      const compiledTemplate = pug.compileFile(templatePath);
+      html = compiledTemplate({ name: this.name, id: this.id });
+    } catch (error) {
+      console.error("Error compiling Pug template:", error);
+      html = "<p>borked - cannot find pug</p>";
+    }
     return html;
   }
 }
@@ -31,6 +37,8 @@ class TodoList {
 class TodoLists {
   constructor(todoListsData) {
     if (Array.isArray(todoListsData)) {
+      // TODO: all this business with maxId is to maintain unique ids
+      // it's better off in a persistence layer
       this.maxId = 0;
       this.todoLists = todoListsData.map((item) => {
         if (item.id > this.maxId) {
@@ -135,3 +143,5 @@ function startServer() {
 }
 
 startServer();
+
+module.exports = app;
