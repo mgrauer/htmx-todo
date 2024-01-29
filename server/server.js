@@ -13,6 +13,10 @@ app.use(express.urlencoded({ extended: true }));
 // Root Endpoint for page load
 
 app.get("/", (req, res) => {
+  if (typeof todoLists === "undefined") {
+    todoLists = new TodoListsModel();
+  }
+
   const todoListsHtml = todoLists.getHtml();
   res.render("index", { title: "Todo Lists", todoLists: todoListsHtml });
 });
@@ -51,8 +55,6 @@ app.delete("/api/list/:id", (req, res) => {
 // Server startup
 
 function startServer() {
-  todoLists = new TodoListsModel();
-
   // Start the server
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

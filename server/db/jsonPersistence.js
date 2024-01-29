@@ -1,9 +1,10 @@
 const fs = require("fs");
-const filePath = "data/storage.json";
+const configPath = require("path").join(process.cwd(), "config");
+const config = require(configPath);
 
 function readJsonFile() {
   try {
-    const data = fs.readFileSync(filePath, "utf8");
+    const data = fs.readFileSync(config.jsonDbFilePath, "utf8");
     const jsonArray = JSON.parse(data).todoLists || [];
     return Array.isArray(jsonArray) ? jsonArray : [];
   } catch (err) {
@@ -15,7 +16,7 @@ function readJsonFile() {
 function writeJsonFile(data) {
   try {
     const stringifiedData = JSON.stringify({ todoLists: data }, null, 2);
-    fs.writeFileSync(filePath, stringifiedData);
+    fs.writeFileSync(config.jsonDbFilePath, stringifiedData);
   } catch (err) {
     console.error(`Error writing file on disk: ${err}`);
   }
