@@ -1,9 +1,15 @@
 const { readTodos, writeTodos } = require("../db/jsonPersistence");
+
+const path = require("path");
+const configPath = path.join(process.cwd(), "config");
+const config = require(configPath);
+const db = require(config.dbBasePath);
+
 const TodoListModel = require("./TodoListModel");
 
 class TodoListsModel {
   constructor() {
-    const todoListsData = readTodos();
+    const todoListsData = db.readTodos();
     if (Array.isArray(todoListsData)) {
       // TODO: all this business with maxId is to maintain unique ids
       // it's better off in a persistence layer
@@ -25,7 +31,7 @@ class TodoListsModel {
   }
 
   persist() {
-    writeTodos(this.todoLists);
+    db.writeTodos(this.todoLists);
   }
 
   addList(newList) {
