@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Todo Server",
       "skipFiles": ["<node_internals>/**"],
-      "program": "server.js"
+      "program": "server/server.js"
     },
     {
       "type": "node",
